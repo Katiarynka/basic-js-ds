@@ -28,13 +28,10 @@ module.exports = class Queue {
 
     getUnderlyingList() {
         return this.head;
-        // throw new NotImplementedError('Not implemented');
-        // remove line with error and write your code here
     }
 
     enqueue(value) {
-        // throw new NotImplementedError('Not implemented');
-        //  remove line with error and write your code here
+
         if (this.length === 0) {
             this.head = new ListNode(value);
         } else {
@@ -48,8 +45,7 @@ module.exports = class Queue {
     }
 
     dequeue() {
-        //throw new NotImplementedError('Not implemented');
-        // remove line with error and write your code here
+
         if (this.length === 0) {
             return undefined
         }

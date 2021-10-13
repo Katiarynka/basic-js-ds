@@ -3,44 +3,134 @@ const { NotImplementedError } = require('../extensions/index.js');
 // const { Node } = require('../extensions/list-tree.js');
 
 /**
-* Implement simple binary search tree according to task description
-* using Node from extensions
-*/
+ * Implement simple binary search tree according to task description
+ * using Node from extensions
+ */
+
+Node = class {
+    constructor(data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}
+
 module.exports = class BinarySearchTree {
 
-  root() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    constructor() {
+        this.treeRoot = null;
+    }
 
-  add(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    root() {
+        return this.treeRoot;
+    }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    add(data) {
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+        this.treeRoot = addNode(this.treeRoot, data);
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+        function addNode(node, data) {
+            if (!node) { return new Node(data) }
+            if (node.data === data) { return node }
+            if (data < node.data) {
+                node.left = addNode(node.left, data)
+            } else {
+                node.right = addNode(node.right, data)
+            }
+            return node;
+        }
 
-  min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    }
 
-  max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    has(data) {
+
+        return hasData(this.treeRoot, data);
+
+        function hasData(node, data) {
+            if (!node) { return false }
+            if (node.data === data) { return true }
+            return data < node.data ? hasData(node.left, data) : hasData(node.right, data);
+        }
+    }
+
+    find(data) {
+
+        return findData(this.treeRoot, data);
+
+        function findData(node, data) {
+            if (!node) { return null }
+            if (node.data === data) {
+                return node
+            }
+            return data < node.data ? findData(node.left, data) : findData(node.right, data);
+        }
+
+    }
+
+    remove(data) {
+
+        this.treeRoot = removeNode(this.treeRoot, data);
+
+        function removeNode(node, data) {
+            if (!node) { return null }
+            if (node.data < data) {
+                node.right = removeNode(node.right, data);
+                return node;
+            } else if (node.data > data) {
+                node.left = removeNode(node.left, data)
+                return node;
+            } else {
+
+                if (!node.left && !node.right) {
+                    return null;
+                }
+
+                if (!node.right) {
+                    node = node.left;
+                    return node;
+                }
+
+                if (!node.left) {
+                    node = node.right;
+                    return node;
+                }
+
+                let minFromBigger = node.right;
+                while (minFromBigger.left) {
+                    minFromBigger = minFromBigger.left;
+                }
+
+                node.data = minFromBigger.data;
+                node.right = removeNode(node.right, node.data);
+                return node;
+            }
+
+        }
+
+    }
+
+    min() {
+
+        if (!this.treeRoot) { return null }
+
+        let current = this.treeRoot;
+        while (current.left) {
+            current = current.left;
+        }
+        return current.data;
+
+    }
+
+    max() {
+
+        if (!this.treeRoot) { return null }
+
+        let current = this.treeRoot;
+        while (current.right) {
+            current = current.right;
+        }
+        return current.data;
+
+    }
 
 }
